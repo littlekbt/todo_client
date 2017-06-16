@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div id="todos">
+      <ol>
+        <todo-item v-for="item in groceryList" v-bind:todo="item"></todo-item>
+      </ol>
+    </div>
+  <script>
+    // componentの作成
+    Vue.component('todo-item', {
+      props: ['todo'],
+      template: '<li>{{ todo.text }}</li>'
+    })
+    $.ajax({
+      type: "GET",
+      url: "https://us-central1-southern-lane-170005.cloudfunctions.net/todos",
+      success: function(msg){
+        console.log(msg)
+        todos = new Vue({
+          crossDomain: true,
+          el: '#todos',
+          data: {
+            groceryList: [
+              { id: 0, text: 'Vegetables' },
+              { id: 1, text: 'Cheese' },
+              { id: 2, text: 'Whatever else humans are supposed to eat' }
+            ]
+          }
+        })
+      },
+      error: function(err) {
+        console.log(err) 
+      },
+      complete: function() {
+        console.log("fin") 
+      },
+      timeout: function() {
+        console.log("timeout") 
+      }
+    })
+  </script>
+  </body>
+</html>
