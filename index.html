@@ -10,36 +10,24 @@
       </ol>
     </div>
   <script>
-    // componentの作成
     Vue.component('todo-item', {
       props: ['todo'],
-      template: '<li>{{ todo.text }}</li>'
+      template: '<li>{{ todo.name }} - {{todo.tags}}</li>'
     })
     $.ajax({
       type: "GET",
-      url: "https://us-central1-southern-lane-170005.cloudfunctions.net/todos",
+      url: "https://southern-lane-170005.appspot.com?url=https://us-central1-southern-lane-170005.cloudfunctions.net/todos",
       success: function(msg){
-        console.log(msg)
         todos = new Vue({
           crossDomain: true,
           el: '#todos',
           data: {
-            groceryList: [
-              { id: 0, text: 'Vegetables' },
-              { id: 1, text: 'Cheese' },
-              { id: 2, text: 'Whatever else humans are supposed to eat' }
-            ]
+            groceryList: JSON.parse(msg)
           }
         })
       },
       error: function(err) {
         console.log(err) 
-      },
-      complete: function() {
-        console.log("fin") 
-      },
-      timeout: function() {
-        console.log("timeout") 
       }
     })
   </script>
